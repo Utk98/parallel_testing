@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.digite.cloud.selenium</groupId>
+        <artifactId>selenium-parent-pom</artifactId>
+        <version>0.0.7</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.digite.cloud.selenium</groupId>
+    <artifactId>cafe</artifactId>
+    <version>1.7.9</version>
+    <name>Landing Page E2E Tests</name>
+    <description>Tests Landing User interaction flows end-to-end</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <skip.integration.tests>true</skip.integration.tests> <!-- This should be set as false while execution and true for Jar creation-->
+        <skip.tests>true</skip.tests><!-- This should be set as false while execution and true for Jar creation-->
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <selenium.framework.version>2.5.5</selenium.framework.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>7.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.10</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.digite.cloud</groupId>
+            <artifactId>selenium-framework</artifactId>
+            <version>${selenium.framework.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.22.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>digite-releases</id>
+            <url>https://nexusrm.cloud.digite.com/repository/digite-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <!-- bleeding edge -->
+            <id>digite-snapshots</id>
+            <url>https://nexusrm.cloud.digite.com/repository/digite-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>lp-releases</id>
+            <url>https://nexusrm.cloud.digite.com/repository/lp-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <!-- bleeding edge -->
+            <id>lp-snapshots</id>
+            <url>https://nexusrm.cloud.digite.com/repository/lp-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+<!--                    <includes>-->
+<!--                        <include>**/CucumberChromeTestCombined.java</include>-->
+<!--                    </includes>-->
+                    <threadCount>3</threadCount>
+                    <forkCount>2</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <!-- Enable parallel execution -->
+                    <parallel>methods</parallel> <!-- or "classes" -->
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
+
+                    <properties>
+                        <configurationParameters>
+                            cucumber.plugin=pretty,html:target/site/cucumber-pretty.html
+                            cucumber.publish.quiet=true
+                            cucumber.publish.enabled=false
+                        </configurationParameters>
+                    </properties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven.failsafe.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.5.4</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.integration.tests}</skip>
+                            <projectName>ExecutionResult</projectName>
+                            <outputDirectory>${project.basedir}/target/cucumber-report-html_${cucumber.TAGS}</outputDirectory>
+                            <inputDirectory>${project.basedir}/target</inputDirectory>
+                            <jsonFiles>
+                                <param>cucumber.json</param>
+                            </jsonFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>digite-releases</id>
+            <name>digite Releases Repository</name>
+            <url>https://nexusrm.cloud.digite.com/repository/digite-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <layout>default</layout>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>digite-snapshots</id>
+            <name>digite Snapshots</name>
+            <url>https://nexusrm.cloud.digite.com/repository/digite-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <layout>default</layout>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
