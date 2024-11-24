@@ -79,6 +79,18 @@ public class WebDriverFactory {
     public WebDriver getDriverInstance() throws Exception {
         return getDriver();
     }
-
-
+//
+//    // Clear cookies after each test method
+//    @AfterMethod(alwaysRun = true)
+//    public void clearCookies() throws Exception {
+//        getDriverInstance().manage().deleteAllCookies();
+//    }
+//
+//    // Close all driver objects after the test suite completes
+//    @AfterSuite(alwaysRun = true)
+//    public void closeDriverObjects() {
+//        for (WebDriverFactory factory : webDriverThreadPool) {
+//            factory.quitDriver();
+//        }
+//    }
 }
